@@ -1,0 +1,20 @@
+modules:
+  confluence:homepageFeed:
+    - key: confluence-homepage-leaderboard-hello-world-homepage-feed
+      resource: main
+      render: native
+      resolver:
+        function: resolver
+      title: confluence-homepage-leaderboard
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/d71b2cc3-6444-4f08-9c18-2e9d35c1456e
