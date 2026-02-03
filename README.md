@@ -15,9 +15,9 @@ You will need the latest version of the Forge CLI installed, and an Atlassian cl
 
 ## Workshop Exercises
 
-[Exercise 1 - Install the demo app](EXERCISE_01.md)
-[Exercise 2 - Subscribe to realtime events](EXERCISE_02.md)
-[Exercise 3 - Publish a realtime event when triggered](EXERCISE_03.md)
+* [Exercise 1 - Install the demo app](EXERCISE_01.md)
+* [Exercise 2 - Subscribe to realtime events](EXERCISE_02.md)
+* [Exercise 3 - Publish a realtime event when triggered](EXERCISE_03.md)
 
 ## Questions
 

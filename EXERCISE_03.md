@@ -31,31 +31,47 @@ For simplicity there isn't any error checking, or checking for inappropriate lan
 2. Within the `storeMessage` function, add a `publishGlobal` call before each of the successful return statements:
     ```
     export const storeMessage = async (event) => {
-      const channel = 'realtime-leaderboard';
       let eventArray = await kvs.get(event.event);
       if(eventArray) {
-        await kvs.set(event.event, [...eventArray, event.name]);
-        publishGlobal(channel, event.event);
-        return ({
-          outputKey: "status-ok",
-          message: "updated existing event"
-        })
+        try {
+          await kvs.set(event.event, [...eventArray, event.name]);
+          // publish the event to the realtime-leaderboard channel
+          publishGlobal('realtime-leaderboard', event.event);
+          return ({
+            outputKey: "status-ok",
+            message: "updated existing event"
+          })
+        } catch (err) {
+          return ({
+            outputKey: "status-error",
+            message: "error storing data"
+          })
+        }
       }
       else {
-        await kvs.set(event.event, [event.name]);
-        publishGlobal(channel, event.event);
-        return ({
-          outputKey: "status-ok",
-          message: "created new event"
-        })
+        try {
+          await kvs.set(event.event, [event.name]);
+          // publish the event to the realtime-leaderboard channel
+          publishGlobal('realtime-leaderboard', event.event);
+          return ({
+            outputKey: "status-ok",
+            message: "created new event"
+          })
+        } catch (err) {
+          return ({
+            outputKey: "status-error",
+            message: "error storing data"
+          })
+        }
       }
-      return ({
-        outputKey: "status-error",
-        message: "error storing data"
-      })
+
     }
     ```
-3. Deploy the changes to your app
+3. Before deploying, install the realtime package
+    ```
+    npm install @forge/realtime
+    ```
+4. Deploy the changes to your app
     ``` 
     forge deploy
     ```
