@@ -1,6 +1,8 @@
-# Forge Hello World
+# Confluence Homepage Leaderboard
 
-This project contains a Forge app written in Javascript that displays `Hello World!` on the right panel of the Confluence homepage.
+This project contains a Forge app written in Javascript that displays a simple Leaderboard, which displays information submitted via a webhook. 
+
+
 
 See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
 
@@ -10,9 +12,15 @@ See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/)
 
 ## Quick start
 
-- Modify your app frontend by editing the `src/frontend/index.jsx` file.
+- Register this app to your developer account by running:
+```
+forge register
+```
 
-- Modify your app backend by editing the `src/resolvers/index.js` file to define resolver functions. See [Forge resolvers](https://developer.atlassian.com/platform/forge/runtime-reference/custom-ui-resolver/) for documentation on resolver functions.
+- Install dependencies by running:
+```
+npm install
+```
 
 - Build and deploy your app by running:
 ```
