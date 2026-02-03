@@ -1,34 +1,61 @@
 import Resolver from '@forge/resolver';
+import { webTrigger } from '@forge/api';
+import { kvs } from '@forge/kvs';
 
 export const storeMessage = async (event) => {
-  //TODO - error handling
   let eventArray = await kvs.get(event.event);
   if(eventArray) {
-    await kvs.set(event.event, [...eventArray, event.name]);
-    return ({
-      outputKey: "status-ok",
-      message: "updated existing event"
-    })
+    try {
+      await kvs.set(event.event, [...eventArray, event.name]);
+      return ({
+        outputKey: "status-ok",
+        message: "updated existing event"
+      })
+    } catch (err) {
+      return ({
+        outputKey: "status-error",
+        message: "error storing data"
+      })
+    }
   }
   else {
-    await kvs.set(event.event, [event.name]);
-    return ({
-      outputKey: "status-ok",
-      message: "created new event"
-    })
+    try {
+      await kvs.set(event.event, [event.name]);
+      return ({
+        outputKey: "status-ok",
+        message: "created new event"
+      })
+    } catch (err) {
+      return ({
+        outputKey: "status-error",
+        message: "error storing data"
+      })
+    }
   }
-  return ({
-    outputKey: "status-error",
-    message: "error storing data"
-  })
+
 }
 
 const resolver = new Resolver();
 
-resolver.define('getText', (req) => {
-  console.log(req);
+resolver.define('getTriggerUrl', () => {
+  return webTrigger.getUrl("forge-web-trigger")
+}); 
 
-  return 'Hello, world!';
+resolver.define('getEventValues', (req) => {
+  console.log('get kvs values')
+  console.log(req.payload.event)
+  return kvs.get(req.payload.event)
+});
+
+resolver.define('getEventNames', () => {
+  console.log('Getting all events...')
+  return kvs.query().getMany();
+});
+
+resolver.define('deleteEventData', async (req) => {
+  console.log('Deleting data...' + req.payload)
+  await kvs.delete(req.payload);
+  return kvs.query().getMany();
 });
 
 export const handler = resolver.getDefinitions();
