@@ -21,6 +21,8 @@ You will need the latest version of the Forge CLI installed, and an Atlassian cl
 
 ## Questions
 
+Review the solution [here](solution)
+
 [Ask in the Atlassian Developer Community](https://developer.atlassian.com/community)
 
 ---
