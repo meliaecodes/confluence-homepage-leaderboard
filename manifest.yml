@@ -49,3 +49,4 @@ app:
 permissions:
   scopes:
     - storage:app
+    - read:app-global-channel:realtime

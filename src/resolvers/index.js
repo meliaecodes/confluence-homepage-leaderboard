@@ -1,12 +1,15 @@
 import Resolver from '@forge/resolver';
 import { webTrigger } from '@forge/api';
 import { kvs } from '@forge/kvs';
+import { publishGlobal } from '@forge/realtime';
+
 
 export const storeMessage = async (event) => {
   let eventArray = await kvs.get(event.event);
   if(eventArray) {
     try {
       await kvs.set(event.event, [...eventArray, event.name]);
+      publishGlobal('realtime-leaderboard', event.event);
       return ({
         outputKey: "status-ok",
         message: "updated existing event"
@@ -21,6 +24,7 @@ export const storeMessage = async (event) => {
   else {
     try {
       await kvs.set(event.event, [event.name]);
+      publishGlobal('realtime-leaderboard', event.event);
       return ({
         outputKey: "status-ok",
         message: "created new event"

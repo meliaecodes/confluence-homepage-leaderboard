@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ForgeReconciler, { DynamicTable,  Inline, Select, Spinner, Text, Button, Heading, Stack } from '@forge/react';
-import { invoke } from '@forge/bridge';
+import { invoke, realtime } from '@forge/bridge';
 
 const App = () => {
   const [event, setEvent] = useState(null);
@@ -13,6 +13,15 @@ const App = () => {
 
   useEffect(() => {
     invoke("getEventNames").then(setEventNames);
+    const handleRefresh = (eventName) => {
+      console.log({eventName})
+      setRefreshing(true);
+      invoke("getEventNames").then(result => {
+        setEventNames(result);
+        setRefreshing(false);
+      })
+    }
+    const globalSubscription = realtime.subscribeGlobal("realtime-leaderboard", handleRefresh)
   }, []);
 
   const handleRefresh = (e) => {
