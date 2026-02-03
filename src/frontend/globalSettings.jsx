@@ -37,7 +37,7 @@ const App = () => {
   }, [eventNames]);
 
 
-  const data = JSON.stringify({ event: "test-event", name: "charles atlas" });
+  const data = JSON.stringify({ event: "atlas-camp", name: "charles atlas" });
   const sampleCurl = trigger
     ? `curl -X POST ${trigger} --data '${data}'`
     : "Loading...";
