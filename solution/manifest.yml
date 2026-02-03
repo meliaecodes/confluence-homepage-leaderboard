@@ -1,0 +1,52 @@
+modules:
+  webtrigger:
+    - key: forge-web-trigger
+      function: web-trigger
+      response:
+        type: static
+        outputs:
+          - key: status-ok
+            statusCode: 200
+            contentType: application/json
+            body: '{"body": "Data stored successfully"}'
+          - key: status-error
+            statusCode: 400
+            contentType: text/plain
+            body: 'Error: Bad Request'
+          - key: status-forbidden
+            statusCode: 403
+            contentType: text/plain
+            body: 'Error: Forbidden'
+  confluence:homepageFeed:
+    - key: confluence-homepage-leaderboard-hello-world-homepage-feed
+      resource: homepage-feed
+      render: native
+      resolver:
+        function: resolver
+      title: AtlasCamp Amsterdam Leaderboard
+  confluence:globalSettings:
+    - key: forge-webhook-leaderboard-global-settings
+      resource: global-settings
+      render: native
+      resolver:
+        function: resolver
+      title: AtlasCamp Amsterdam Leaderboard Setings
+  function:
+    - key: resolver
+      handler: index.handler
+    - key: web-trigger
+      handler: index.webTrigger
+resources:
+  - key: homepage-feed
+    path: src/frontend/homepageFeed.jsx
+  - key: global-settings
+    path: src/frontend/globalSettings.jsx
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+permissions:
+  scopes:
+    - storage:app
+    - read:app-global-channel:realtime
