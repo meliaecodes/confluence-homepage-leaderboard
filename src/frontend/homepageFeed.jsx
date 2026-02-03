@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ForgeReconciler, { Inline, Select, Spinner, Text, Button, Heading, Stack } from '@forge/react';
+import ForgeReconciler, { DynamicTable,  Inline, Select, Spinner, Text, Button, Heading, Stack } from '@forge/react';
 import { invoke } from '@forge/bridge';
 
 const App = () => {
@@ -17,7 +17,6 @@ const App = () => {
 
   const handleRefresh = (e) => {
     setRefreshing(true);
-    setEvent(null);
     invoke("getEventNames").then(result => {
       setEventNames(result)
       setRefreshing(false);
@@ -31,13 +30,19 @@ const App = () => {
           <Heading as="h2">Leaderboard</Heading>
           <Button isLoading={refreshing} onClick={e => handleRefresh(e)}>Refresh</Button>
         </Inline>
-      <Stack>
         { (eventNames && !refreshing) ? <Select
           options={eventNames.results.map((name) => ({ value: name.key, label: name.key }))}
           onChange={(option) => handleSelectChange(option)}
           /> : <Spinner /> } 
-        { event ? eventNames.results.find(e => e.key === event).value.map(i => <Text>{i}</Text>) : <Text>Select an event...</Text> }
-      </Stack>
+          { event && <DynamicTable caption={event} rows={eventNames.results.find(e => e.key === event).value.map((item) => ({
+            key: item,
+            cells: [
+              {
+                key: "name",
+                content: <Text>{item}</Text>
+              }
+            ]
+          }))}/>}
     </Stack>
   </>
   );
