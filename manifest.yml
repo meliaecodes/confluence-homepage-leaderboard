@@ -1,4 +1,22 @@
 modules:
+  webtrigger:
+    - key: forge-web-trigger
+      function: web-trigger
+      response:
+        type: static
+        outputs:
+          - key: status-ok
+            statusCode: 200
+            contentType: application/json
+            body: '{"body": "Data stored successfully"}'
+          - key: status-error
+            statusCode: 400
+            contentType: text/plain
+            body: 'Error: Bad Request'
+          - key: status-forbidden
+            statusCode: 403
+            contentType: text/plain
+            body: 'Error: Forbidden'
   confluence:homepageFeed:
     - key: confluence-homepage-leaderboard-hello-world-homepage-feed
       resource: main
@@ -9,6 +27,8 @@ modules:
   function:
     - key: resolver
       handler: index.handler
+    - key: web-trigger
+      handler: index.webTrigger
 resources:
   - key: main
     path: src/frontend/index.jsx
